@@ -1,7 +1,10 @@
 **RetailPulse EDA Insights
 **
+
 Overall Business Performance
+
 Total Sales: 2,297,200.86
+
 Total Profit: 286,397.02
 
 The business generated strong revenue overall, though profit margin appears significantly lower than total sales, suggesting:
