@@ -1,3 +1,4 @@
+from sqlalchemy import create_engine
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,6 +8,10 @@ from prophet import Prophet
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from fpdf import FPDF
+
+DATABASE_URL = "postgresql://neondb_owner:npg_deol3IVuD1Mt@ep-broad-wave-alw7sqw8-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+engine = create_engine(DATABASE_URL)
 # =========================
 # PAGE CONFIG
 # =========================
@@ -331,7 +336,12 @@ with tab5:
 
     # LOAD FILES
     future_df = pd.read_csv("future_forecast.csv")
-
+future_df.to_sql(
+    "future_forecasts",
+    engine,
+    if_exists="replace",
+    index=False
+)
     actual_df = pd.read_csv("actual_vs_predicted.csv")
 
     # =========================
