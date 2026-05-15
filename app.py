@@ -195,13 +195,14 @@ sales_by_category = (
 # TABS
 # =========================
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "📈 Sales Analytics",
     "🌍 Regional Insights",
     "🧠 AI Insights",
     "🔮 Prophet Forecast",
     "🧠 LSTM Forecast",
-    "🏆 Model Comparison"
+    "🏆 Model Comparison",
+    "💬 AI Analyst"
 ])
 # =========================
 # TAB 1 — SALES ANALYTICS
@@ -444,6 +445,105 @@ Prophet performs strongly for business seasonality trends,
 while ARIMA provides stable statistical forecasting.
 """
     )
+
+    #=========================
+    #💬 AI ANALYST TAB
+    #=========================
+with tab7:
+
+    st.subheader(
+        "💬 RetailPulse AI Analyst"
+    )
+
+    user_question = st.text_input(
+        "Ask a business question"
+    )
+
+    if user_question:
+
+        question = user_question.lower()
+
+        # =========================
+        # SALES QUESTIONS
+        # =========================
+
+        if "best region" in question:
+
+            st.success(
+                f"""
+🏆 Best Region:
+{best_region}
+
+This region currently generates the
+highest sales performance.
+"""
+            )
+
+        elif "best category" in question:
+
+            st.success(
+                f"""
+📦 Best Category:
+{best_category}
+
+This category currently drives the
+strongest revenue contribution.
+"""
+            )
+
+        elif "profit" in question:
+
+            st.info(
+                f"""
+📈 Current Total Profit:
+${total_profit:,.0f}
+
+Profitability remains strongest in
+high-performing regional markets.
+"""
+            )
+
+        elif "forecast" in question:
+
+            st.warning(
+                """
+🔮 Forecast Insight:
+
+RetailPulse forecasting models detect
+strong seasonal spikes during Q4 periods.
+
+LSTM currently demonstrates the
+highest forecasting performance.
+"""
+            )
+
+        elif "discount" in question:
+
+            st.info(
+                f"""
+🏷️ Average Discount:
+{avg_discount:.2f}
+
+High discount levels may reduce
+overall profitability if unmanaged.
+"""
+            )
+
+        else:
+
+            st.error(
+                """
+RetailPulse AI could not fully
+interpret the question.
+
+Try asking about:
+- best region
+- forecast
+- profit
+- category
+- discounts
+"""
+            )    
     # =========================
     # ACTUAL vs PREDICTED
     # =========================
