@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objects as go
+from prophet import Prophet
 
 # =========================
 # PAGE CONFIG
@@ -55,24 +58,28 @@ h1, h2, h3 {
 """, unsafe_allow_html=True)
 
 # =========================
+# HEADER
+# =========================
+
+st.title("🛍️ RetailPulse AI")
+
+st.markdown("""
+AI-powered retail analytics and forecasting platform
+""")
+
+st.caption(
+    "Built with AI Forecasting, Interactive BI Analytics, and Enterprise Reporting"
+)
+
+st.markdown("---")
+
+# =========================
 # LOAD DATA
 # =========================
 
 df = pd.read_csv("Superstore.csv")
 
 df["Order Date"] = pd.to_datetime(df["Order Date"])
-
-# =========================
-# TITLE
-# =========================
-
-st.title("🛍️ RetailPulse")
-
-st.markdown("""
-AI-powered retail analytics and forecasting platform
-""")
-
-st.markdown("---")
 
 # =========================
 # SIDEBAR FILTERS
@@ -137,9 +144,13 @@ col4.metric("🏷️ Avg Discount", f"{avg_discount:.2f}")
 monthly_sales = filtered_df.resample(
     "ME",
     on="Order Date"
-)["Sales"].sum()
+)["Sales"].sum().reset_index()
 
-region_sales = filtered_df.groupby("Region")["Sales"].sum()
+region_sales = (
+    filtered_df.groupby("Region")["Sales"]
+    .sum()
+    .reset_index()
+)
 
 top_products = (
     filtered_df.groupby("Product Name")["Sales"]
@@ -153,9 +164,13 @@ loss_products = (
     .sum()
     .sort_values()
     .head(10)
+    .reset_index()
 )
 
-best_region = region_sales.idxmax()
+best_region = region_sales.loc[
+    region_sales["Sales"].idxmax(),
+    "Region"
+]
 
 best_category = (
     filtered_df.groupby("Category")["Sales"]
@@ -163,46 +178,88 @@ best_category = (
     .idxmax()
 )
 
+sales_by_category = (
+    filtered_df.groupby("Category")["Sales"]
+    .sum()
+    .reset_index()
+)
+
 # =========================
 # TABS
 # =========================
 
-tab1, tab2, tab3 = st.tabs([
+tab1, tab2, tab3, tab4 = st.tabs([
     "📈 Sales Analytics",
     "🌍 Regional Insights",
-    "🧠 AI Insights"
+    "🧠 AI Insights",
+    "🔮 Forecasting"
 ])
 
 # =========================
-# TAB 1
+# TAB 1 — SALES ANALYTICS
 # =========================
 
 with tab1:
 
     st.subheader("📈 Monthly Sales Trend")
 
-    st.line_chart(monthly_sales)
+    fig_sales = px.line(
+        monthly_sales,
+        x="Order Date",
+        y="Sales",
+        title="Monthly Sales Trend",
+        markers=True
+    )
+
+    st.plotly_chart(fig_sales, use_container_width=True)
+
+    st.subheader("🥧 Revenue Distribution")
+
+    fig_pie = px.pie(
+        sales_by_category,
+        names="Category",
+        values="Sales",
+        title="Revenue Distribution"
+    )
+
+    st.plotly_chart(fig_pie, use_container_width=True)
 
     st.subheader("🏆 Top Products")
 
     st.dataframe(top_products)
 
 # =========================
-# TAB 2
+# TAB 2 — REGIONAL INSIGHTS
 # =========================
 
 with tab2:
 
     st.subheader("🌍 Regional Sales")
 
-    st.bar_chart(region_sales)
+    fig_region = px.bar(
+        region_sales,
+        x="Region",
+        y="Sales",
+        color="Region",
+        title="Regional Sales Performance"
+    )
+
+    st.plotly_chart(fig_region, use_container_width=True)
 
     st.subheader("📉 Loss-Making Categories")
 
-    st.bar_chart(loss_products)
+    fig_loss = px.bar(
+        loss_products,
+        x="Sub-Category",
+        y="Profit",
+        color="Profit",
+        title="Loss-Making Categories"
+    )
+
+    st.plotly_chart(fig_loss, use_container_width=True)
 
 # =========================
-# TAB 3
+# TAB 3 — AI INSIGHTS
 # =========================
 
 with tab3:
@@ -218,4 +275,46 @@ with tab3:
         📌 Total revenue generated:
         ${total_sales:,.0f}
         """
+    )
+
+# =========================
+# TAB 4 — FORECASTING
+# =========================
+
+with tab4:
+
+    st.subheader("🔮 Prophet Sales Forecast")
+
+    prophet_df = monthly_sales.rename(
+        columns={
+            "Order Date": "ds",
+            "Sales": "y"
+        }
+    )
+
+    model = Prophet()
+
+    model.fit(prophet_df)
+
+    future = model.make_future_dataframe(
+        periods=12,
+        freq="ME"
+    )
+
+    forecast = model.predict(future)
+
+    fig_forecast = px.line(
+        forecast,
+        x="ds",
+        y="yhat",
+        title="12-Month Sales Forecast"
+    )
+
+    st.plotly_chart(fig_forecast, use_container_width=True)
+
+    st.subheader("📊 Forecast Data")
+
+    st.dataframe(
+        forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]]
+        .tail(12)
     )
