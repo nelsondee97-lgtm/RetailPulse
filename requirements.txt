@@ -7,4 +7,3 @@ prophet
 statsmodels
 plotly
 reportlab
-tersorflow
