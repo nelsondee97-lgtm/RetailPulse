@@ -321,3 +321,78 @@ with tab4:
         forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]]
         .tail(12)
     )
+# =========================
+# 🧠 LSTM TAB
+# =========================
+
+with tab5:
+
+    st.subheader("🧠 LSTM Deep Learning Forecast")
+
+    # LOAD FILES
+    future_df = pd.read_csv("future_forecast.csv")
+
+    actual_df = pd.read_csv("actual_vs_predicted.csv")
+
+    # =========================
+    # ACTUAL vs PREDICTED
+    # =========================
+
+    fig_actual = go.Figure()
+
+    fig_actual.add_trace(
+        go.Scatter(
+            y=actual_df["Actual"],
+            mode="lines",
+            name="Actual Sales"
+        )
+    )
+
+    fig_actual.add_trace(
+        go.Scatter(
+            y=actual_df["Predicted"],
+            mode="lines",
+            name="Predicted Sales"
+        )
+    )
+
+    fig_actual.update_layout(
+        title="Actual vs Predicted Sales",
+        xaxis_title="Time",
+        yaxis_title="Sales"
+    )
+
+    st.plotly_chart(
+        fig_actual,
+        use_container_width=True
+    )
+
+    # =========================
+    # FUTURE FORECAST
+    # =========================
+
+    fig_future = go.Figure()
+
+    fig_future.add_trace(
+        go.Scatter(
+            x=future_df["Date"],
+            y=future_df["Forecast"],
+            mode="lines+markers",
+            name="Future Forecast"
+        )
+    )
+
+    fig_future.update_layout(
+        title="LSTM Future Forecast",
+        xaxis_title="Date",
+        yaxis_title="Forecasted Sales"
+    )
+
+    st.plotly_chart(
+        fig_future,
+        use_container_width=True
+    )
+
+    st.success(
+        "📈 Deep learning forecast engine active."
+    )
