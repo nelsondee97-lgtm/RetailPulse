@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 
 # =========================
@@ -11,6 +10,11 @@ st.set_page_config(
     page_title="RetailPulse AI",
     layout="wide"
 )
+
+# =========================
+# CUSTOM STYLING
+# =========================
+
 st.markdown("""
 <style>
 
@@ -32,19 +36,10 @@ section[data-testid="stSidebar"] {
     padding: 15px;
     border-radius: 12px;
 }
-tab1, tab2, tab3 = st.tabs([
-    "📈 Sales Analytics",
-    "🌍 Regional Insights",
-    "🧠 AI Insights"
-])
+
 /* Headers */
 h1, h2, h3 {
     color: #f9fafb;
-}
-
-/* Dataframe */
-[data-testid="stDataFrame"] {
-    background-color: white;
 }
 
 /* Buttons */
@@ -58,6 +53,7 @@ h1, h2, h3 {
 
 </style>
 """, unsafe_allow_html=True)
+
 # =========================
 # LOAD DATA
 # =========================
@@ -79,7 +75,7 @@ AI-powered retail analytics and forecasting platform
 st.markdown("---")
 
 # =========================
-# SIDEBAR
+# SIDEBAR FILTERS
 # =========================
 
 st.sidebar.header("📊 Dashboard Filters")
@@ -102,7 +98,10 @@ segment = st.sidebar.multiselect(
     default=df["Segment"].unique()
 )
 
+# =========================
 # FILTER DATA
+# =========================
+
 filtered_df = df[
     (df["Region"].isin(region)) &
     (df["Category"].isin(category)) &
@@ -110,7 +109,7 @@ filtered_df = df[
 ]
 
 # =========================
-# KPIs
+# KPI SECTION
 # =========================
 
 total_sales = filtered_df["Sales"].sum()
@@ -130,14 +129,53 @@ col2.metric("📈 Total Profit", f"${total_profit:,.0f}")
 col3.metric("🛒 Orders", total_orders)
 
 col4.metric("🏷️ Avg Discount", f"{avg_discount:.2f}")
+
 # =========================
-# SALES TREND
+# ANALYTICS DATA
 # =========================
 
 monthly_sales = filtered_df.resample(
     "M",
     on="Order Date"
 )["Sales"].sum()
+
+region_sales = filtered_df.groupby("Region")["Sales"].sum()
+
+top_products = (
+    filtered_df.groupby("Product Name")["Sales"]
+    .sum()
+    .sort_values(ascending=False)
+    .head(10)
+)
+
+loss_products = (
+    filtered_df.groupby("Sub-Category")["Profit"]
+    .sum()
+    .sort_values()
+    .head(10)
+)
+
+best_region = region_sales.idxmax()
+
+best_category = (
+    filtered_df.groupby("Category")["Sales"]
+    .sum()
+    .idxmax()
+)
+
+# =========================
+# TABS
+# =========================
+
+tab1, tab2, tab3 = st.tabs([
+    "📈 Sales Analytics",
+    "🌍 Regional Insights",
+    "🧠 AI Insights"
+])
+
+# =========================
+# TAB 1
+# =========================
 
 with tab1:
 
@@ -149,13 +187,9 @@ with tab1:
 
     st.dataframe(top_products)
 
-st.line_chart(monthly_sales)
-
 # =========================
-# REGION ANALYSIS
+# TAB 2
 # =========================
-
-region_sales = filtered_df.groupby("Region")["Sales"].sum()
 
 with tab2:
 
@@ -166,7 +200,10 @@ with tab2:
     st.subheader("📉 Loss-Making Categories")
 
     st.bar_chart(loss_products)
-st.bar_chart(region_sales)
+
+# =========================
+# TAB 3
+# =========================
 
 with tab3:
 
@@ -182,56 +219,3 @@ with tab3:
         ${total_sales:,.0f}
         """
     )
-# =========================
-# TOP PRODUCTS
-# =========================
-
-top_products = (
-    filtered_df.groupby("Product Name")["Sales"]
-    .sum()
-    .sort_values(ascending=False)
-    .head(10)
-)
-
-st.subheader("🏆 Top Products")
-
-st.dataframe(top_products)
-# =========================
-# LOSS PRODUCTS
-# =========================
-
-loss_products = (
-    filtered_df.groupby("Sub-Category")["Profit"]
-    .sum()
-    .sort_values()
-    .head(10)
-)
-
-st.subheader("📉 Loss-Making Categories")
-
-st.bar_chart(loss_products)
-
-# =========================
-# AI INSIGHTS
-# =========================
-
-st.subheader("🧠 AI Business Insights")
-
-best_region = region_sales.idxmax()
-
-best_category = (
-    filtered_df.groupby("Category")["Sales"]
-    .sum()
-    .idxmax()
-)
-
-st.success(
-    f"""
-    📌 Highest sales region: {best_region}
-
-    📌 Best performing category: {best_category}
-
-    📌 Total revenue generated:
-    ${total_sales:,.0f}
-    """
-)
