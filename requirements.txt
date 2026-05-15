@@ -8,3 +8,5 @@ prophet
 statsmodels
 joblib
 fpdf
+sqlalchemy
+psycopg2-binary
