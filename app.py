@@ -135,7 +135,7 @@ col4.metric("🏷️ Avg Discount", f"{avg_discount:.2f}")
 # =========================
 
 monthly_sales = filtered_df.resample(
-    "M",
+    "ME",
     on="Order Date"
 )["Sales"].sum()
 
