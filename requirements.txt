@@ -2,8 +2,8 @@ streamlit
 pandas
 numpy
 matplotlib
+plotly
 scikit-learn
 prophet
 statsmodels
-plotly
-reportlab
+joblib
