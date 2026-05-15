@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from prophet import Prophet
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
-
+from fpdf import FPDF
 # =========================
 # PAGE CONFIG
 # =========================
@@ -396,3 +396,59 @@ with tab5:
     st.success(
         "📈 Deep learning forecast engine active."
     )
+# =========================
+# 📥 EXECUTIVE REPORT
+# =========================
+
+st.subheader("📥 Download Executive Report")
+
+if st.button("Generate AI Business Report"):
+
+    report = FPDF()
+
+    report.add_page()
+
+    report.set_font("Arial", "B", 16)
+
+    report.cell(200, 10, "RetailPulse AI Executive Report", ln=True)
+
+    report.ln(10)
+
+    report.set_font("Arial", size=12)
+
+    report.multi_cell(
+        0,
+        10,
+        f"""
+Total Sales: ${total_sales:,.0f}
+
+Total Profit: ${total_profit:,.0f}
+
+Total Orders: {total_orders}
+
+Best Region: {best_region}
+
+Best Category: {best_category}
+
+Average Discount: {avg_discount:.2f}
+
+AI Forecast Insight:
+RetailPulse predicts continued seasonal fluctuations with
+strong Q4 performance patterns.
+
+Strategic Recommendation:
+Focus inventory allocation toward high-performing categories
+and optimize discount strategies in weaker regions.
+"""
+    )
+
+    report.output("RetailPulse_Report.pdf")
+
+    with open("RetailPulse_Report.pdf", "rb") as file:
+
+        st.download_button(
+            label="📥 Download Report",
+            data=file,
+            file_name="RetailPulse_Report.pdf",
+            mime="application/pdf"
+        )
