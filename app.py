@@ -336,13 +336,15 @@ with tab5:
 
     # LOAD FILES
     future_df = pd.read_csv("future_forecast.csv")
-future_df.to_sql(
+    
+    actual_df = pd.read_csv("actual_vs_predicted.csv")
+
+    future_df.to_sql(
     "future_forecasts",
     engine,
     if_exists="replace",
     index=False
 )
-    actual_df = pd.read_csv("actual_vs_predicted.csv")
 
     # =========================
     # ACTUAL vs PREDICTED
