@@ -69,7 +69,7 @@ h1, h2, h3 {
 # HEADER
 # =========================
 
-st.title("🛍️ RetailPulse AI")
+st.title("🛍️ RetailPulse")
 
 st.markdown("""
 AI-powered retail analytics and forecasting platform
