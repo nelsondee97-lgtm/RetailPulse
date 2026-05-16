@@ -18,7 +18,7 @@ engine = create_engine(DATABASE_URL)
 # =========================
 
 st.set_page_config(
-    page_title="RetailPulse AI",
+    page_title="RetailPulse",
     layout="wide"
 )
 
