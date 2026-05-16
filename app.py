@@ -506,7 +506,7 @@ with tab7:
     )
 
     question = st.text_input(
-        "Ask RetailPulse AI"
+        "Ask RetailPulse AI a business question"
     )
 
     if question:
