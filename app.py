@@ -11,6 +11,25 @@ from fpdf import FPDF
 import yfinance as yf
 import time
 
+@st.cache_data(ttl=60)
+def load_market_data(ticker):
+
+    data = yf.download(
+        ticker,
+        period="1mo",
+        interval="1d"
+    )
+
+    if isinstance(
+        data.columns,
+        pd.MultiIndex
+    ):
+        data.columns = (
+            data.columns.get_level_values(0)
+        )
+
+    return data
+    
 DATABASE_URL = "postgresql://neondb_owner:npg_deol3IVuD1Mt@ep-broad-wave-alw7sqw8-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 engine = create_engine(DATABASE_URL)
