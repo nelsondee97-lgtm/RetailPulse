@@ -2,6 +2,11 @@ import pandas as pd
 from prophet import Prophet
 from sqlalchemy import create_engine
 
+DATABASE_URL = "postgresql://neondb_owner:npg_deol3IVuD1Mt@ep-broad-wave-alw7sqw8-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+engine = create_engine(
+    DATABASE_URL
+)
 # =========================
 # LOAD DATA
 # =========================
@@ -54,11 +59,12 @@ forecast_output = forecast[
     ]
 ]
 
-forecast_output.to_csv(
-    "automated_forecast.csv",
+forecast_output.to_sql(
+    "future_forecast",
+    engine,
+    if_exists="replace",
     index=False
 )
-
 print(
     "✅ Forecast pipeline completed."
 )
