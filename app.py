@@ -538,7 +538,7 @@ if isinstance(market_data.columns, pd.MultiIndex):
         # =========================
         # SALES QUESTIONS
         # =========================
-if "best region" in question:
+        if "best region" in question:
 
             st.success(
                 f"""
@@ -614,7 +614,7 @@ Try asking about:
 - category
 - discounts
 """
-            )    
+            )
     # =========================
     # ACTUAL vs PREDICTED
     # =========================
