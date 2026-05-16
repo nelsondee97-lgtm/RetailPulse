@@ -500,10 +500,12 @@ while ARIMA provides stable statistical forecasting.
     #=========================
 with tab7:
 
-    st.subheader("💬 AI Business Analyst")
+    st.subheader(
+        "💬 AI Business Analyst"
+    )
 
     question = st.text_input(
-        "Ask RetailPulse AI a business question"
+        "Ask RetailPulse AI"
     )
 
     if question:
@@ -512,26 +514,60 @@ with tab7:
 
         if "best region" in question:
 
-            st.success(
-                f"🏆 Best region is {best_region}"
+            answer = (
+                filtered_df.groupby("Region")["Profit"]
+                .sum()
+                .idxmax()
             )
 
-        elif "best category" in question:
-
             st.success(
-                f"📈 Best category is {best_category}"
+                f"🏆 Most profitable region: {answer}"
             )
 
-        elif "profit" in question:
+        elif "worst category" in question:
+
+            answer = (
+                filtered_df.groupby("Category")["Profit"]
+                .sum()
+                .idxmin()
+            )
+
+            st.error(
+                f"📉 Worst category: {answer}"
+            )
+
+        elif "best segment" in question:
+
+            answer = (
+                filtered_df.groupby("Segment")["Sales"]
+                .sum()
+                .idxmax()
+            )
 
             st.success(
-                f"💰 Total profit is ${total_profit:,.0f}"
+                f"📈 Best segment: {answer}"
+            )
+
+        elif "highest sales month" in question:
+
+            monthly = (
+                filtered_df.resample(
+                    "ME",
+                    on="Order Date"
+                )["Sales"]
+                .sum()
+            )
+
+            answer = monthly.idxmax()
+
+            st.success(
+                f"🔥 Peak sales month: {answer.strftime('%B %Y')}"
             )
 
         else:
 
-            st.warning(
-                "AI could not understand the question."
+            st.info(
+                "RetailPulse AI could not interpret that question yet."
             )
 # =========================
 # 📡 LIVE MARKET FEED
