@@ -758,10 +758,10 @@ sales momentum remains stable.
 """
 
 st.success(executive_report)
-        # =========================
-        # SALES QUESTIONS
-        # =========================
-          if "best region" in question:
+# =========================
+# SALES QUESTIONS
+# =========================
+        if "best region" in question:
 
             st.success(
                 f"""
