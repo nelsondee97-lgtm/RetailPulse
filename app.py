@@ -243,7 +243,7 @@ sales_by_category = (
 # TABS
 # =========================
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
     "📈 Sales Analytics",
     "🌍 Regional Insights",
     "🧠 AI Insights",
@@ -252,6 +252,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "🏆 Model Comparison",
     "💬 AI Analyst",
     "📡 Live Market Feed"
+    "🧠 Executive AI Intelligence"
 ])
 # =========================
 # TAB 1 — SALES ANALYTICS
@@ -679,6 +680,84 @@ if isinstance(market_data.columns, pd.MultiIndex):
 {volatility:.4f}
 """
         )
+# =========================
+# 🧠 EXECUTIVE AI INTELLIGENCE
+# =========================
+with tab9:
+    st.subheader(
+    "🧠 Executive AI Intelligence"
+)
+
+# =========================
+# BUSINESS LOGIC
+# =========================
+
+highest_region = (
+    filtered_df.groupby("Region")["Profit"]
+    .sum()
+    .idxmax()
+)
+
+lowest_region = (
+    filtered_df.groupby("Region")["Profit"]
+    .sum()
+    .idxmin()
+)
+
+highest_category = (
+    filtered_df.groupby("Category")["Sales"]
+    .sum()
+    .idxmax()
+)
+
+loss_category = (
+    filtered_df.groupby("Category")["Profit"]
+    .sum()
+    .idxmin()
+)
+
+volatility = (
+    filtered_df.groupby("Month")["Sales"]
+    .sum()
+    .std()
+)
+
+# =========================
+# AI GENERATED REPORT
+# =========================
+
+executive_report = f"""
+
+RetailPulse AI has completed an enterprise-wide retail analysis.
+
+📈 Strongest regional performance came from:
+{highest_region}
+
+📉 Weakest regional profitability came from:
+{lowest_region}
+
+🏆 Highest revenue category:
+{highest_category}
+
+⚠️ Risk detected in category:
+{loss_category}
+
+📊 Sales volatility score:
+{volatility:.2f}
+
+🧠 Strategic Recommendation:
+
+Increase operational investment in
+{highest_region}
+while reducing discount exposure
+in {loss_category}.
+
+RetailPulse AI predicts continued
+revenue acceleration if current
+sales momentum remains stable.
+"""
+
+st.success(executive_report)
         # =========================
         # SALES QUESTIONS
         # =========================
