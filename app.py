@@ -486,11 +486,15 @@ with tab8:
     )
 
     market_data = yf.download(
-        ticker,
-        period="1mo",
-        interval="1d"
-    )
+    ticker,
+    period="1mo",
+    interval="1d"
+     )
 
+     # Fix MultiIndex
+    if isinstance(market_data.columns, pd.MultiIndex):
+    market_data.columns = market_data.columns.get_level_values(0)
+    
     if not market_data.empty:
 
         st.metric(
