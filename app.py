@@ -761,14 +761,12 @@ st.success(executive_report)
         # =========================
         # SALES QUESTIONS
         # =========================
-      
-      if "best region" in question:
+          if "best region" in question:
 
             st.success(
                 f"""
 🏆 Best Region:
 {best_region}
-
 This region currently generates the
 highest sales performance.
 """
@@ -780,7 +778,6 @@ highest sales performance.
                 f"""
 📦 Best Category:
 {best_category}
-
 This category currently drives the
 strongest revenue contribution.
 """
@@ -792,7 +789,6 @@ strongest revenue contribution.
                 f"""
 📈 Current Total Profit:
 ${total_profit:,.0f}
-
 Profitability remains strongest in
 high-performing regional markets.
 """
@@ -803,10 +799,8 @@ high-performing regional markets.
             st.warning(
                 """
 🔮 Forecast Insight:
-
 RetailPulse forecasting models detect
 strong seasonal spikes during Q4 periods.
-
 LSTM currently demonstrates the
 highest forecasting performance.
 """
@@ -818,7 +812,6 @@ highest forecasting performance.
                 f"""
 🏷️ Average Discount:
 {avg_discount:.2f}
-
 High discount levels may reduce
 overall profitability if unmanaged.
 """
@@ -830,7 +823,6 @@ overall profitability if unmanaged.
                 """
 RetailPulse AI could not fully
 interpret the question.
-
 Try asking about:
 - best region
 - forecast
@@ -838,7 +830,7 @@ Try asking about:
 - category
 - discounts
 """
-            )
+            )    
     # =========================
     # ACTUAL vs PREDICTED
     # =========================
