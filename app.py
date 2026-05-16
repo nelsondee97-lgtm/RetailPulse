@@ -500,7 +500,7 @@ while ARIMA provides stable statistical forecasting.
     #💬 AI ANALYST TAB
     #=========================
 with tab7:
-
+    
     st.subheader(
         "💬 AI Business Analyst"
     )
@@ -570,6 +570,35 @@ with tab7:
             st.info(
                 "RetailPulse AI could not interpret that question yet."
             )
+
+    if question:
+
+        question = question.lower()
+
+        if "best region" in question:
+
+            st.success(
+                f"🏆 Best region is {best_region}"
+            )
+
+        elif "best category" in question:
+
+            st.success(
+                f"📈 Best category is {best_category}"
+            )
+
+        elif "profit" in question:
+
+            st.success(
+                f"💰 Total profit is ${total_profit:,.0f}"
+            )
+
+        else:
+
+            st.warning(
+                "AI could not understand the question."
+            )
+
 # =========================
 # 📡 LIVE MARKET FEED
 # =========================
