@@ -761,7 +761,7 @@ st.success(executive_report)
 # =========================
 # SALES QUESTIONS
 # =========================
-        if "best region" in question:
+    if "best region" in question:
 
             st.success(
                 f"""
@@ -772,7 +772,7 @@ highest sales performance.
 """
             )
 
-        elif "best category" in question:
+     elif "best category" in question:
 
             st.success(
                 f"""
@@ -783,7 +783,7 @@ strongest revenue contribution.
 """
             )
 
-        elif "profit" in question:
+     elif "profit" in question:
 
             st.info(
                 f"""
@@ -794,7 +794,7 @@ high-performing regional markets.
 """
             )
 
-        elif "forecast" in question:
+     elif "forecast" in question:
 
             st.warning(
                 """
@@ -806,7 +806,7 @@ highest forecasting performance.
 """
             )
 
-        elif "discount" in question:
+     elif "discount" in question:
 
             st.info(
                 f"""
@@ -817,7 +817,7 @@ overall profitability if unmanaged.
 """
             )
 
-        else:
+     else:
 
             st.error(
                 """
