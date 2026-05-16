@@ -9,6 +9,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from fpdf import FPDF
 import yfinance as yf
+import time
 
 DATABASE_URL = "postgresql://neondb_owner:npg_deol3IVuD1Mt@ep-broad-wave-alw7sqw8-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
@@ -22,6 +23,23 @@ st.set_page_config(
     layout="wide"
 )
 
+# =========================
+# AUTO REFRESH ENGINE
+# =========================
+
+REFRESH_INTERVAL = 60  # seconds
+
+if "last_refresh" not in st.session_state:
+    st.session_state.last_refresh = time.time()
+
+current_time = time.time()
+
+if (
+    current_time - st.session_state.last_refresh
+    > REFRESH_INTERVAL
+):
+    st.session_state.last_refresh = current_time
+    st.rerun()
 # =========================
 # CUSTOM STYLING
 # =========================
@@ -70,7 +88,9 @@ h1, h2, h3 {
 # =========================
 
 st.title("🛍️ RetailPulse")
-
+st.success(
+    "🟢 Live Streaming Analytics Active"
+)
 st.markdown("""
 AI-powered retail analytics and forecasting platform
 """)
@@ -84,9 +104,17 @@ st.markdown("---")
 # =========================
 # LOAD DATA
 # =========================
+@st.cache_data(ttl=60)
+def load_data():
 
-df = pd.read_csv("Superstore.csv")
+    df = pd.read_csv("Superstore.csv")
 
+    df["Order Date"] = pd.to_datetime(
+        df["Order Date"]
+    )
+
+    return df
+df = load_data()
 df["Order Date"] = pd.to_datetime(df["Order Date"])
 
 # =========================
@@ -486,9 +514,9 @@ with tab7:
             st.warning(
                 "AI could not understand the question."
             )
-   # =========================
-   # 📡 LIVE MARKET FEED
-   # =========================
+# =========================
+# 📡 LIVE MARKET FEED
+# =========================
 
 with tab8:
 
@@ -507,11 +535,50 @@ with tab8:
         ]
     )
 
-    market_data = yf.download(
-    ticker,
-    period="1mo",
-    interval="1d"
-     )
+    market_data = load_market_data(
+        ticker
+    )
+
+    if not market_data.empty:
+
+        st.metric(
+            "Latest Closing Price",
+            f"${market_data['Close'].iloc[-1]:.2f}"
+        )
+
+        fig_market = px.line(
+            market_data,
+            x=market_data.index,
+            y="Close",
+            title=f"{ticker} Live Market Trend"
+        )
+
+        st.plotly_chart(
+            fig_market,
+            use_container_width=True
+        )
+
+        daily_return = (
+            market_data["Close"]
+            .pct_change()
+            .mean()
+        )
+
+        volatility = (
+            market_data["Close"]
+            .pct_change()
+            .std()
+        )
+
+        st.success(
+            f"""
+📈 Average Daily Return:
+{daily_return:.4f}
+
+⚠️ Market Volatility:
+{volatility:.4f}
+"""
+        )
 
    # Fix MultiIndex
 if isinstance(market_data.columns, pd.MultiIndex):
