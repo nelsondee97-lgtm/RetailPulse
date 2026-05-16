@@ -491,8 +491,8 @@ with tab8:
     interval="1d"
      )
 
-     # Fix MultiIndex
-     if isinstance(market_data.columns, pd.MultiIndex):
+   # Fix MultiIndex
+if isinstance(market_data.columns, pd.MultiIndex):
     market_data.columns = market_data.columns.get_level_values(0)
     
     if not market_data.empty:
