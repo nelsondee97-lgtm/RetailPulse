@@ -8,6 +8,7 @@ from prophet import Prophet
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from fpdf import FPDF
+import yfinance as yf
 
 DATABASE_URL = "postgresql://neondb_owner:npg_deol3IVuD1Mt@ep-broad-wave-alw7sqw8-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
@@ -195,14 +196,15 @@ sales_by_category = (
 # TABS
 # =========================
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "📈 Sales Analytics",
     "🌍 Regional Insights",
     "🧠 AI Insights",
     "🔮 Prophet Forecast",
     "🧠 LSTM Forecast",
     "🏆 Model Comparison",
-    "💬 AI Analyst"
+    "💬 AI Analyst",
+    "📡 Live Market Feed"
 ])
 # =========================
 # TAB 1 — SALES ANALYTICS
@@ -462,7 +464,73 @@ with tab7:
     if user_question:
 
         question = user_question.lower()
+   # =========================
+   # 📡 LIVE MARKET FEED
+   # =========================
 
+with tab8:
+
+    st.subheader(
+        "📡 Real-Time Market Intelligence"
+    )
+
+    ticker = st.selectbox(
+        "Select Market Asset",
+        [
+            "AAPL",
+            "AMZN",
+            "TSLA",
+            "MSFT",
+            "GOOG"
+        ]
+    )
+
+    market_data = yf.download(
+        ticker,
+        period="1mo",
+        interval="1d"
+    )
+
+    if not market_data.empty:
+
+        st.metric(
+            "Latest Closing Price",
+            f"${market_data['Close'].iloc[-1]:.2f}"
+        )
+
+        fig_market = px.line(
+            market_data,
+            x=market_data.index,
+            y="Close",
+            title=f"{ticker} Live Market Trend"
+        )
+
+        st.plotly_chart(
+            fig_market,
+            use_container_width=True
+        )
+
+        daily_return = (
+            market_data["Close"]
+            .pct_change()
+            .mean()
+        )
+
+        volatility = (
+            market_data["Close"]
+            .pct_change()
+            .std()
+        )
+
+        st.success(
+            f"""
+📈 Average Daily Return:
+{daily_return:.4f}
+
+⚠️ Market Volatility:
+{volatility:.4f}
+"""
+        )
         # =========================
         # SALES QUESTIONS
         # =========================
