@@ -762,7 +762,7 @@ st.success(executive_report)
         # SALES QUESTIONS
         # =========================
       
-if "best region" in question:
+      if "best region" in question:
 
             st.success(
                 f"""
