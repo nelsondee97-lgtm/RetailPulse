@@ -453,17 +453,39 @@ while ARIMA provides stable statistical forecasting.
     #=========================
 with tab7:
 
-    st.subheader(
-        "💬 RetailPulse AI Analyst"
+    st.subheader("💬 AI Business Analyst")
+
+    question = st.text_input(
+        "Ask RetailPulse AI a business question"
     )
 
-    user_question = st.text_input(
-        "Ask a business question"
-    )
+    if question:
 
-    if user_question:
+        question = question.lower()
 
-        question = user_question.lower()
+        if "best region" in question:
+
+            st.success(
+                f"🏆 Best region is {best_region}"
+            )
+
+        elif "best category" in question:
+
+            st.success(
+                f"📈 Best category is {best_category}"
+            )
+
+        elif "profit" in question:
+
+            st.success(
+                f"💰 Total profit is ${total_profit:,.0f}"
+            )
+
+        else:
+
+            st.warning(
+                "AI could not understand the question."
+            )
    # =========================
    # 📡 LIVE MARKET FEED
    # =========================
