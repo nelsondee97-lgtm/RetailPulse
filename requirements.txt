@@ -11,3 +11,5 @@ fpdf
 sqlalchemy
 psycopg2-binary
 yfinance
+sqlalchemy
+psycopg2-binary
