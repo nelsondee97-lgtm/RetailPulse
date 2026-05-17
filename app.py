@@ -612,26 +612,44 @@ with tab8:
     )
 
     ticker_names = {
-    "Apple": "AAPL",
-    "Tesla": "TSLA",
-    "Microsoft": "MSFT",
-    "Dangote Cement": "DANGCEM.LG",
-    "GTCO": "GTCO.LG",
-    "Zenith Bank": "ZENITHBANK.LG",
-    "MTN Nigeria": "MTNN.LG"
-}
+        "Apple": "AAPL",
+        "Tesla": "TSLA",
+        "Microsoft": "MSFT",
+        "Dangote Cement": "DANGCEM.LG",
+        "GTCO": "GTCO.LG",
+        "Zenith Bank": "ZENITHBANK.LG",
+        "MTN Nigeria": "MTNN.LG"
+    }
 
-selected_name = st.selectbox(
-    "Select Market Asset",
-    list(ticker_names.keys())
-)
+    selected_name = st.selectbox(
+        "Select Market Asset",
+        list(ticker_names.keys())
+    )
 
-ticker = ticker_names[selected_name]
-    
-market_data = load_market_data(
+    ticker = ticker_names[selected_name]
+
+    market_data = load_market_data(
         ticker
     )
 
+    # =========================
+    # FIX MULTIINDEX
+    # =========================
+
+    if isinstance(
+        market_data.columns,
+        pd.MultiIndex
+    ):
+
+        market_data.columns = (
+            market_data.columns
+            .get_level_values(0)
+        )
+
+    # =========================
+    # DISPLAY DATA
+    # =========================
+
     if not market_data.empty:
 
         st.metric(
@@ -643,7 +661,7 @@ market_data = load_market_data(
             market_data,
             x=market_data.index,
             y="Close",
-            title=f"{ticker} Live Market Trend"
+            title=f"{selected_name} Live Market Trend"
         )
 
         st.plotly_chart(
@@ -673,49 +691,10 @@ market_data = load_market_data(
 """
         )
 
-   # Fix MultiIndex
-if isinstance(market_data.columns, pd.MultiIndex):
-    market_data.columns = market_data.columns.get_level_values(0)
-    
-    if not market_data.empty:
+    else:
 
-        st.metric(
-            "Latest Closing Price",
-            f"${market_data['Close'].iloc[-1]:.2f}"
-        )
-
-        fig_market = px.line(
-            market_data,
-            x=market_data.index,
-            y="Close",
-            title=f"{ticker} Live Market Trend"
-        )
-
-        st.plotly_chart(
-            fig_market,
-            use_container_width=True
-        )
-
-        daily_return = (
-            market_data["Close"]
-            .pct_change()
-            .mean()
-        )
-
-        volatility = (
-            market_data["Close"]
-            .pct_change()
-            .std()
-        )
-
-        st.success(
-            f"""
-📈 Average Daily Return:
-{daily_return:.4f}
-
-⚠️ Market Volatility:
-{volatility:.4f}
-"""
+        st.warning(
+            "No market data available."
         )
 # =========================
 # 🧠 EXECUTIVE AI INTELLIGENCE
