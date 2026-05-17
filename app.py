@@ -627,7 +627,8 @@ selected_name = st.selectbox(
 )
 
 ticker = ticker_names[selected_name]
-    market_data = load_market_data(
+    
+market_data = load_market_data(
         ticker
     )
 
