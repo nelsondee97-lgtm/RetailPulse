@@ -611,17 +611,22 @@ with tab8:
         "📡 Real-Time Market Intelligence"
     )
 
-    ticker = st.selectbox(
-        "Select Market Asset",
-        [
-            "AAPL",
-            "AMZN",
-            "TSLA",
-            "MSFT",
-            "GOOG"
-        ]
-    )
+    ticker_names = {
+    "Apple": "AAPL",
+    "Tesla": "TSLA",
+    "Microsoft": "MSFT",
+    "Dangote Cement": "DANGCEM.LG",
+    "GTCO": "GTCO.LG",
+    "Zenith Bank": "ZENITHBANK.LG",
+    "MTN Nigeria": "MTNN.LG"
+}
 
+selected_name = st.selectbox(
+    "Select Market Asset",
+    list(ticker_names.keys())
+)
+
+ticker = ticker_names[selected_name]
     market_data = load_market_data(
         ticker
     )
