@@ -787,10 +787,17 @@ with tab10:
     # =========================
     # MODEL SCORES
     # =========================
-
     prophet_rmse = 14200
     arima_rmse = 13100
-    lstm_rmse = rmse
+
+    lstm_rmse = float(
+        np.sqrt(
+            mean_squared_error(
+                actual,
+                predictions
+            )
+        )
+    )
 
     model_scores = pd.DataFrame({
 
@@ -807,7 +814,6 @@ with tab10:
         ]
 
     })
-
     # =========================
     # STATUS COLUMN
     # =========================
