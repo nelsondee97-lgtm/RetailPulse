@@ -496,11 +496,12 @@ while ARIMA provides stable statistical forecasting.
 """
     )
 
-    #=========================
-    #💬 AI ANALYST TAB
-    #=========================
+ # =========================
+# 💬 AI ANALYST TAB
+# =========================
+
 with tab7:
-    
+
     st.subheader(
         "💬 AI Business Analyst"
     )
@@ -512,6 +513,10 @@ with tab7:
     if question:
 
         question = question.lower()
+
+        # =========================
+        # BEST REGION
+        # =========================
 
         if "best region" in question:
 
@@ -525,6 +530,10 @@ with tab7:
                 f"🏆 Most profitable region: {answer}"
             )
 
+        # =========================
+        # WORST CATEGORY
+        # =========================
+
         elif "worst category" in question:
 
             answer = (
@@ -537,6 +546,10 @@ with tab7:
                 f"📉 Worst category: {answer}"
             )
 
+        # =========================
+        # BEST SEGMENT
+        # =========================
+
         elif "best segment" in question:
 
             answer = (
@@ -548,6 +561,10 @@ with tab7:
             st.success(
                 f"📈 Best segment: {answer}"
             )
+
+        # =========================
+        # HIGHEST SALES MONTH
+        # =========================
 
         elif "highest sales month" in question:
 
@@ -565,27 +582,9 @@ with tab7:
                 f"🔥 Peak sales month: {answer.strftime('%B %Y')}"
             )
 
-        else:
-
-            st.info(
-                "RetailPulse AI could not interpret that question yet."
-            )
-
-    if question:
-
-        question = question.lower()
-
-        if "best region" in question:
-
-            st.success(
-                f"🏆 Best region is {best_region}"
-            )
-
-        elif "best category" in question:
-
-            st.success(
-                f"📈 Best category is {best_category}"
-            )
+        # =========================
+        # TOTAL PROFIT
+        # =========================
 
         elif "profit" in question:
 
@@ -593,12 +592,15 @@ with tab7:
                 f"💰 Total profit is ${total_profit:,.0f}"
             )
 
+        # =========================
+        # UNKNOWN QUESTION
+        # =========================
+
         else:
 
             st.warning(
-                "AI could not understand the question."
+                "RetailPulse AI could not understand the question."
             )
-
 # =========================
 # 📡 LIVE MARKET FEED
 # =========================
