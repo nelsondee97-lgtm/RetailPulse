@@ -251,7 +251,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
     "🧠 LSTM Forecast",
     "🏆 Model Comparison",
     "💬 AI Analyst",
-    "📡 Live Market Feed"
+    "📡 Live Market Feed",
     "🧠 Executive AI Intelligence"
 ])
 # =========================
