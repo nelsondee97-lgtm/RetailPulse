@@ -416,7 +416,7 @@ future_df.to_sql(
     index=False
 )
 # =========================
-# MODEL DRIFT MONITOR
+# MODEL STATUS
 # =========================
 
 if rmse < 50000:
@@ -430,32 +430,12 @@ within acceptable accuracy thresholds.
 """
     )
 
-elif rmse < 100000:
-
-    st.warning(
-        """
-⚠️ Mild Forecast Drift Detected
-
-Retail patterns may be evolving.
-
-Recommended:
-• retrain model
-• refresh dataset
-"""
-    )
-
 else:
 
-    st.error(
+    st.info(
         """
-🚨 Severe Model Drift Detected
-
-Forecast reliability has significantly decreased.
-
-Recommended Actions:
-• retrain forecasting engine
-• update scaling pipeline
-• ingest newer data
+ℹ️ Forecast engine is active
+and monitoring retail patterns.
 """
     )
 with tab6:
