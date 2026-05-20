@@ -448,7 +448,7 @@ else:
 
     st.error(
         """
-🚨 Severe Model Drift Detected
+⚠️ Forecast Performance Requires Review
 
 Forecast reliability has significantly decreased.
 
