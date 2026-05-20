@@ -390,7 +390,24 @@ with tab5:
     future_df = pd.read_csv("future_forecast.csv")
     
     actual_df = pd.read_csv("actual_vs_predicted.csv")
+# =========================
+# RMSE CALCULATION
+# =========================
 
+rmse = np.sqrt(
+    mean_squared_error(
+        actual_df["Actual"],
+        actual_df["Predicted"]
+    )
+)
+
+# SAVE GLOBALLY
+st.session_state["lstm_rmse"] = rmse
+
+st.metric(
+    "📉 LSTM RMSE",
+    f"{rmse:.2f}"
+)
     future_df.to_sql(
     "future_forecasts",
     engine,
@@ -418,7 +435,10 @@ with tab6:
         "RMSE": [
             12230,
             10100,
-            8950
+           st.session_state.get(
+    "lstm_rmse",
+    8950
+)
         ],
 
         "Performance": [
