@@ -404,7 +404,7 @@ rmse = np.sqrt(
 # SAVE GLOBALLY
 st.session_state["lstm_rmse"] = rmse
 
-st.metric(
+    st.metric(
     "📉 LSTM RMSE",
     f"{rmse:.2f}"
 )
