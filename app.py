@@ -415,7 +415,49 @@ future_df.to_sql(
     if_exists="replace",
     index=False
 )
+# =========================
+# MODEL DRIFT MONITOR
+# =========================
 
+if rmse < 50000:
+
+    st.success(
+        """
+✅ Model Status: Stable
+
+LSTM forecasting engine is operating
+within acceptable accuracy thresholds.
+"""
+    )
+
+elif rmse < 100000:
+
+    st.warning(
+        """
+⚠️ Mild Forecast Drift Detected
+
+Retail patterns may be evolving.
+
+Recommended:
+• retrain model
+• refresh dataset
+"""
+    )
+
+else:
+
+    st.error(
+        """
+🚨 Severe Model Drift Detected
+
+Forecast reliability has significantly decreased.
+
+Recommended Actions:
+• retrain forecasting engine
+• update scaling pipeline
+• ingest newer data
+"""
+    )
 with tab6:
 
     st.subheader(
@@ -895,7 +937,7 @@ with tab10:
         .apply(
             lambda x:
             "🔥 Excellent"
-            if x < 10000
+            if x < 50000
             else "✅ Stable"
         )
     )
