@@ -925,36 +925,6 @@ for future enterprise forecasting.
 """
     )
 
-    # =========================
-    # MODEL DRIFT MONITOR
-    # =========================
-
-    drift_threshold = 15000
-
-    if lstm_rmse > drift_threshold:
-
-        st.error(
-            """
-⚠️ Model Drift Warning
-
-LSTM forecasting accuracy has degraded.
-
-Recommended Actions:
-- retrain model
-- update dataset
-- refresh scaling pipeline
-"""
-        )
-
-    else:
-
-        st.info(
-            """
-✅ Forecast models remain stable.
-
-No major model drift detected.
-"""
-        )
 # =========================
 # SALES QUESTIONS
 # =========================
