@@ -404,11 +404,12 @@ rmse = np.sqrt(
 # SAVE GLOBALLY
 st.session_state["lstm_rmse"] = rmse
 
-    st.metric(
+st.metric(
     "📉 LSTM RMSE",
     f"{rmse:.2f}"
 )
-    future_df.to_sql(
+
+future_df.to_sql(
     "future_forecasts",
     engine,
     if_exists="replace",
