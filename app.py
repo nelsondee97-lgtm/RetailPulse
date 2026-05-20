@@ -513,7 +513,7 @@ Lower RMSE indicates better forecasting accuracy.
     )
 
     # HEALTH STATUS
-    if lstm_score < 10000:
+    if lstm_score < 50000:
 
         st.success(
             """
@@ -524,7 +524,7 @@ is operating within acceptable limits.
 """
         )
 
-    elif lstm_score < 20000:
+    elif lstm_score < 100000:
 
         st.warning(
             """
