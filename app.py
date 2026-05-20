@@ -541,7 +541,60 @@ with tab6:
 Lower RMSE indicates better forecasting accuracy.
 """
     )
+    # =========================
+    # MODEL DRIFT MONITOR
+    # =========================
 
+    st.subheader(
+        "🛡️ Forecast Health Monitor"
+    )
+
+    lstm_score = st.session_state.get(
+        "lstm_rmse",
+        8950
+    )
+
+    # HEALTH STATUS
+    if lstm_score < 10000:
+
+        st.success(
+            """
+✅ Forecast Engine Stable
+
+RetailPulse forecasting performance
+is operating within acceptable limits.
+"""
+        )
+
+    elif lstm_score < 20000:
+
+        st.warning(
+            """
+⚠️ Moderate Model Drift Detected
+
+Forecast accuracy has slightly reduced.
+
+Recommended Actions:
+• retrain forecasting engine
+• refresh incoming datasets
+• monitor sales volatility
+"""
+        )
+
+    else:
+
+        st.error(
+            """
+🚨 Severe Model Drift Detected
+
+Forecast reliability has decreased.
+
+Recommended Actions:
+• retrain forecasting engine
+• update scaling pipeline
+• ingest newer business data
+"""
+        )
     # =========================
     # AI INTERPRETATION
     # =========================
