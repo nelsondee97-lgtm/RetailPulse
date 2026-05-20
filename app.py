@@ -812,7 +812,7 @@ with tab10:
     prophet_rmse = 14200
     arima_rmse = 13100
 
-   lstm_rmse = st.session_state.get(
+    lstm_rmse = st.session_state.get(
     "lstm_rmse",
     0
 )
