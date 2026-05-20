@@ -419,7 +419,7 @@ future_df.to_sql(
 # MODEL DRIFT MONITOR
 # =========================
 
-if rmse < 10000:
+if rmse < 50000:
 
     st.success(
         """
@@ -430,7 +430,7 @@ within acceptable accuracy thresholds.
 """
     )
 
-elif rmse < 20000:
+elif rmse < 100000:
 
     st.warning(
         """
